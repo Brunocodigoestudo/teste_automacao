@@ -2,8 +2,7 @@ name: Executar Script SQL em horários fixos
 
 on:
   schedule:
-    - cron: '0 19 * * *'  # 16:00 BRT
-    - cron: '0 20 * * *'  # 17:00 BRT
+    - cron: '*/5 * * * *' # 16:00 BRT
   workflow_dispatch:      # permite execução manual também
 
 jobs:
