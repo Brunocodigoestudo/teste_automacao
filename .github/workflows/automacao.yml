@@ -1,0 +1,34 @@
+name: Executar Script SQL em horários fixos
+
+on:
+  schedule:
+    - cron: '0 19 * * *'  # 16:00 BRT
+    - cron: '0 20 * * *'  # 17:00 BRT
+  workflow_dispatch:      # permite execução manual também
+
+jobs:
+  run-sql-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências de sistema
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unixodbc-dev gcc g++ gnupg
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+          curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | sudo tee /etc/apt/sources.list.d/mssql-release.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y msodbcsql17
+          pip install pyodbc pandas
+
+      - name: Executar script Python
+        run: python main.py
+
+      - name: Salvar CSV como artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: resultado-query
+          path: resultado_query_*.csv
