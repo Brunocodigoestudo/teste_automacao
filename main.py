@@ -16,7 +16,7 @@ import pandas as pd
 from datetime import datetime
 
 # Minha query
-query = "SELECT TOP 100 * FROM DimProduct"
+query = "SELECT * FROM DimProduct"
 
 # lê direto para um DataFrame
 df = pd.read_sql(query, conexaoDB)
